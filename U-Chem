@@ -153,7 +153,7 @@ int menu()
 
 int viewstock()
 {
-	FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "r");
+	FILE *fp = fopen("meddetails.csv", "r");
 
     if (!fp) {
         printf("Can't open file\n");
@@ -211,7 +211,7 @@ int viewstock()
 }
 int search()
  {
- 	FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "r");
+ 	FILE *fp = fopen("meddetails.csv", "r");
 	int flag=0;
 	char med[50];
     if (!fp) {
@@ -295,7 +295,7 @@ printf("\n\nIf you want to Search More Press [S] else [C] for Continue \n");
  }
  int add()
  {
- 	FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "a+");
+ 	FILE *fp = fopen("meddetails.csv", "a+");
 	char medname[50],location[10];
 	int price,quantity,i,rack;
     if (!fp) 
@@ -378,7 +378,7 @@ int G[MAX][MAX], i, j, n=11, u,l,m;
 
 
 
-FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "r");
+FILE *fp = fopen("meddetails.csv", "r");
 
     if (!fp) {
         printf("Can't open file\n");
