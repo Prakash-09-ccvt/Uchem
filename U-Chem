@@ -1,0 +1,529 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<windows.h>
+#define INF 99
+#define V 11
+#define INFINITY 9999
+#define MAX 11
+
+
+
+
+int src,dest;
+void dijikstra(int G[MAX][MAX], int n, int startnode);
+
+int n=11;
+char choice;
+
+int flag=0;
+int main()
+ {
+ 	menu();	  
+ }
+void administrator()
+{
+	system("cls");
+	char password[20]; 
+  	char defaultpassword[20]="uchemadmin";
+  	
+    printf("\nEnter Password:\n"); 
+    int p=0; 
+    do{ 
+        password[p]=getch(); 
+        if(password[p]!='\r')
+		{ 
+            printf("*"); 
+        }
+		 
+        p++; 
+    }while(password[p-1]!='\r'); 
+    
+	password[p-1]='\0'; 
+
+	if(strcmp(password,defaultpassword)==0)
+	{	system("cls");
+		printf("\n\n[C] Check Stock\n\n[U] Update Stock\n\n");
+	choice=getch();
+	
+		if(choice=='c'||choice=='C')
+		{	
+			system("cls");
+			viewstock();
+			
+		}		
+		else if(choice=='u'||choice=='U')
+		{
+			system("cls");
+			add();
+			
+
+		}
+		else 
+		{	system("cls");
+			printf("\nInvalid Choice \nIf you want to continue Press [C]\n");
+			choice=getch();
+			if(choice=='c'||choice=='C')
+			{	system("cls");
+				menu();
+			}
+		}
+}
+else
+{		
+	//system("color FC");
+
+	printf("\nWrong Password\nIf you want to continue Press [C]\n\n");
+	
+		choice=getch();
+			if(choice=='c'||choice=='C')
+			{	
+				system("cls");
+				menu();
+			}
+}
+
+	}
+
+  
+void user()
+{
+
+printf("\n\n[S] Search an Item\n\n[A] Show Available Items\n\n[T] Track Location");
+	choice=getch();
+	
+		if(choice=='s'||choice=='S')
+		{
+		system("cls");
+		search();
+		
+		}
+		else if(choice=='a'||choice=='A')
+		{
+		system("cls");
+		viewstock();
+		}
+		else if(choice=='t'||choice=='T')
+		{
+		system("cls");
+		location();
+		}		
+		else 
+		{
+			printf("\nInvalid Choice \nIf you want to continue Press [C]\n");
+			choice=getch();
+			if(choice=='c'||choice=='C')
+			{
+				system("cls");
+				menu();
+			}
+			
+		}
+}
+int menu()
+{	
+		
+		printf("*****************U-Chem******************\n\n Welcome To Automated Pharmacy Store Program\n\n\n ");
+		printf("[A] ADMINISTRATOR / STAFF\n\n [C] CUSTOMER\n\n\n ENTER YOUR OPTION :");
+
+		choice=getch();
+		if(choice=='a'||choice=='A')
+		{	system("cls");
+			administrator();
+		}
+		else if(choice=='c'||choice=='C')
+		{
+			system("cls");
+			user();
+			
+		}		
+		else 
+		{
+			printf("\nInvalid Choice \nIf you want to continue Press [C]\n");
+			choice=getch();
+			if(choice=='c'||choice=='C')
+			{
+				
+				menu();
+			}
+		}
+		
+}
+
+int viewstock()
+{
+	FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "r");
+
+    if (!fp) {
+        printf("Can't open file\n");
+        return 0;
+    }
+    
+	char buf[1024];
+    int row_count = 0;
+    int field_count = 0;
+    while (fgets(buf, 1024, fp))
+	 {
+        field_count = 0;
+        row_count++;
+
+        if (row_count == 1) 
+		{
+            continue;
+        }
+
+        char *field = strtok(buf, ",");
+        while (field) 
+		{
+            if (field_count == 0) {
+                printf("Med Name:");
+            }
+            if (field_count == 1) {
+                printf("\tPrice:");
+            }
+            if (field_count == 2) {
+                    printf("\tQuantity:");
+            }
+            if (field_count == 3) {
+                printf("\tLocation:");
+            }
+            if(field_count == 4)
+            {
+            	printf("\tRack:");
+			}
+
+            printf("%s", field);
+            field = strtok(NULL, ",");
+
+            field_count++;
+        }
+        printf("\n");
+    }
+    
+    fclose(fp);
+    printf("\nIf you want to continue Press [C]\n");
+			choice=getch();
+			if(choice=='c'||choice=='C')
+			{	system("cls");
+				menu();
+			}
+}
+int search()
+ {
+ 	FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "r");
+	int flag=0;
+	char med[50];
+    if (!fp) {
+        printf("Can't open file\n");
+        return 0;
+    }
+ 	
+	printf("\n\nEnter the medicine name you want to search\n");
+	gets(med);
+    char buf[1024];
+    int row_count = 0;
+    int field_count = 0;
+    while (fgets(buf, 1024, fp))
+	 {
+        field_count = 0;
+        row_count++;
+
+        if (row_count == 1) 
+		{
+            continue;
+        }
+
+        char *field = strtok(buf, ",");
+        if(strcasecmp(med,field)==0)
+        {
+        printf("medicine found:\n");
+        flag+=1;
+        while (field)
+		{
+            if (field_count == 0) {
+                printf("Med Name: ");
+            }
+            if (field_count == 1) {
+                printf("\tPrice:");
+            }
+            if (field_count == 2) {
+                printf("\tQuantity:");    
+            }
+            if (field_count == 3) {
+                printf("\tLocation:");
+            }
+            if(field_count == 4)
+            {
+            	printf("\tRack:");
+			}
+
+            printf("%s", field);
+            field = strtok(NULL, ",");
+
+            field_count++;
+
+		}
+        }
+        else
+        {
+            continue;
+
+        }
+
+       
+    }
+    if(flag==0)
+ 	{ 
+	printf("\nMedicine not found");
+	}
+fclose(fp);
+
+printf("\n\nIf you want to Search More Press [S] else [C] for Continue \n");
+			choice=getch();
+			if(choice=='s'||choice=='S')
+			{
+				system("cls");
+				search();
+			}
+			else if(choice=='c'||choice=='C')
+			{
+				system("cls");
+				menu();
+			}
+			
+ }
+ int add()
+ {
+ 	FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "a+");
+	char medname[50],location[10];
+	int price,quantity,i,rack;
+    if (!fp) 
+	{
+        printf("Can't open file\n");
+        return 0;
+    }
+
+    printf("\nEnter new medicine name\n");
+ 	scanf("%s", &medname);
+ 	printf("\nEnter Price of medicine\n");
+ 	scanf("%d", &price);
+ 	printf("\nEnter Quantity of medicine\n");
+ 	scanf("%d", &quantity);
+	printf("\nEnter Location of medicine\n");
+ 	scanf("%s", &location);
+	printf("\nEnter Rack of medicine\n");
+ 	scanf("%d", &rack);
+	fprintf(fp,"%s,%d,%d,%s,%d\n",medname,price,quantity,location,rack);
+	printf("\nNew Medicine Successfully added to record");
+	
+	printf("\nIf you want to add another Medicine Press [A] & [C] for Continue\n");
+			choice=getch();
+			if(choice=='a'||choice=='A')
+			{
+				system("cls");
+				add();
+			}
+			if(choice=='c'||choice=='C')
+			{
+				system("cls");
+				menu();
+			}
+    fclose(fp);
+ }
+ 
+
+
+location()
+{
+int G[MAX][MAX], i, j, n=11, u,l,m;
+	
+    for(l=0;l<MAX;l++)
+    {
+        for(m=0;m<MAX;m++)
+        {
+            	G[l][m]=INFINITY;
+        }
+    }
+    G[1][5] = 4;
+    G[1][0] = 12; 		// A -> COUNTER
+    G[3][1] = 4;		// C -> A
+    G[2][0] = 15;		// B -> COUNTER
+    G[4][3] = 6;		// D -> C
+    G[4][7] = 14;		// D -> G
+    G[5][2] = 3;		// E -> B
+    G[6][2] = 7;		// F -> B
+    G[7][5] = 6;		// G -> E
+    G[8][7] = 6;		// H -> G
+    G[10][9] = 13;		// J -> I
+    G[8][10] =11;		// H -> J
+    G[9][6] = 7;		// I -> F
+    G[5][1] = 4;
+    G[0][1] = 12; 		// A -> COUNTER
+    G[1][3] = 4;		// C -> A
+    G[0][2] = 15;		// B -> COUNTER
+    G[3][4] = 6;		// D -> C
+    G[7][4] = 14;		// D -> G
+    G[2][5] = 3;		// E -> B
+    G[2][6] = 7;		// F -> B
+    G[5][7] = 6;		// G -> E
+    G[7][8] = 6;		// H -> G
+    G[9][10] = 13;		// J -> I
+    G[10][8] =11;		// H -> J
+    G[6][9] = 7;
+   
+	int flag=0;
+	
+	int rack;
+
+
+
+FILE *fp = fopen("C:\\Users\\sahil\\Desktop\\practice\\meddetails.csv", "r");
+
+    if (!fp) {
+        printf("Can't open file\n");
+        return 0;
+    }
+    char med[50];
+printf("\nEnter the medicine name:\n");
+gets(med);
+system("cls");
+	char buf[1024];
+    int row_count = 0;
+    int field_count = 0;
+    while (fgets(buf, 1024, fp))
+{
+        field_count = 0;
+        row_count++;
+
+        if (row_count == 1)
+{
+            continue;
+        }
+
+        char *field = strtok(buf, ",");
+        while (field)
+{
+            if (field_count == 0)
+{
+
+              if(strcasecmp(field,med)==0)
+ {
+  flag+=1;
+printf("Med Name: %s\n",field);
+field = strtok(NULL, ",");
+field = strtok(NULL, ",");
+field = strtok(NULL, ",");
+field = strtok(NULL, ",");
+//field_count+=3;
+rack = atoi(field);
+//printf("%d",rack);
+
+field = strtok(NULL, ",");
+break;
+}
+else
+
+            field = strtok(NULL, ",");
+field=NULL;
+
+            }
+            else
+            printf("\nMedicine not found");
+
+        }
+
+
+       // printf("\n");
+    }
+  if(flag==0)
+  {
+        //printf("\nMedicine not found");
+        location();
+    }
+    
+    printf("\nEnter your current location:\n");
+    printf("Press 0 if  you are at counter\n");
+    printf("Press 1 if  you are at rack 1\n");
+    printf("Press 2 if you are at rack 2 and so on for other racks\n");
+
+    scanf("%d",&u);
+    dest = rack;
+
+    
+
+   
+    printf("\n\nfollow this Path: \n");
+	dijikstra(G,n,u);
+	fclose(fp);
+    
+    printf("\nIf you want to Track More Location [T] else [C] for Continue \n");
+			choice=getch();
+			if(choice=='t'||choice=='T')
+			{
+				system("cls");
+				location();
+			}
+			else if(choice=='c'||choice=='C')
+			{
+				system("cls");
+				menu();
+			}
+}
+void dijikstra(int G[MAX][MAX], int n, int startnode)
+{
+	int cost[MAX][MAX], distance[MAX], pred[MAX];
+	int visited[MAX], count, mindistance, nextnode, i,j;
+	for(i=0;i < n;i++)
+		for(j=0;j < n;j++)
+			if(G[i][j]==0)
+				cost[i][j]=INFINITY;
+			else
+				cost[i][j]=G[i][j];
+	
+	for(i=0;i< n;i++)
+	{
+		distance[i]=cost[startnode][i];
+		pred[i]=startnode;
+		visited[i]=0;
+	}
+	distance[startnode]=0;
+	visited[startnode]=1;
+	count=1;
+	while(count < n-1){
+		mindistance=INFINITY;
+		for(i=0;i < n;i++)
+			if(distance[i] < mindistance&&!visited[i])
+			{
+				mindistance=distance[i];
+				nextnode=i;
+			}
+		visited[nextnode]=1;
+		for(i=0;i < n;i++)
+			if(!visited[i])
+				if(mindistance+cost[nextnode][i] < distance[i])
+				{
+					distance[i]=mindistance+cost[nextnode][i];
+					pred[i]=nextnode;
+				}
+			count++;
+	}
+ 
+	for(i=0;i < n;i++)
+		if(i!=startnode)
+		{
+			if(i==dest)
+			{
+			
+			//printf("\nDistance of %d = %d", i, distance[i]);
+			printf("\nPath = %d", i);
+			j=i;
+			do
+			{
+				j=pred[j];
+				printf(" <-%d", j);
+			}
+			while(j!=startnode);
+			}
+		}
+}
